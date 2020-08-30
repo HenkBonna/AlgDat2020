@@ -15,13 +15,15 @@ public class UkeOppgaver1 {
 
     // Oppgave 1.1.2 - 2
     static int min(int[] a){
-        int min_value = a[0];
+        int min_pos = 0;
+        int min_val = a[0];
         for (int i=1; i<a.length; ++i){
-            if (a[i] < min_value){
-                min_value = a[i];
+            if (a[i] < min_val){
+                min_pos = i;
+                min_val = a[i];
             }
         }
-        return min_value;
+        return min_pos;
     }
 
     /* Oppgave 1.1.3 - 5 Lag en metode public static int[] minmaks(int[] a). Den skal ved hjelp av en int-tabell med
