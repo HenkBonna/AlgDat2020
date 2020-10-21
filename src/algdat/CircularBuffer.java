@@ -1,47 +1,66 @@
 package algdat;
 // Live forelesning Tirsdag 6. Okt 2020
 public class CircularBuffer {
-	// stuff is hardcoded just for lecture
-	char[] values;
-	int back = 0;
-	int front = 0;
-	int size = 0;
 
-	public static void main(String[] args){
-		System.out.println("Hello World");
+	char[] buffer;
+	int size;
+	int head; // Pointer to queue-start
+	int tail; // Pointer to queue-end
+	int count; // Amount of elements in the queue now
 
-		CircularBuffer buffer = new CircularBuffer();
-
-		char[] chars = "ABCDEFGHIJKLMNOPQRSTUVW".toCharArray();
-
-		for (int i = 0; i < chars.length; i++){
-			for (int j = 0; j < 5; j++){
-				buffer.pushBack(chars[i]);
-			}
-			for (int j = 0; j < 5; j++){
-				System.out.print(buffer.popFront());
-			}
-			System.out.println();
-		}
-
-		buffer.popFront();
-	}
-
-	CircularBuffer(){
-		size = 14;
-		values = new char[size];
+	CircularBuffer(int size){
+		this.buffer = new char[size];
+		this.size = size;
+		this.head = 0;
+		this.tail = 0;
+		this.count = 0;
 	}
 
 	void pushBack(char value){
-		values[back] = value;
-		back = (back + 1) % size;
+		if (count + 1 > size){
+			throw new IndexOutOfBoundsException();
+		}
+		buffer[tail] = value;
+		tail = (tail + 1) % size;
+		count = count + 1;
+
 	}
 
 	char popFront(){
-		char retval = values[front];
-		front = (front + 1) % size;
+		if (count <= 0){
+			throw new IndexOutOfBoundsException();
+		}
+		char retval = buffer[head];
+		System.out.print(head);
+		head = (head + 1) % size;
+		count = count - 1;
 		return retval;
 	}
 
+	int count(){
+		return count;
+	}
 
+	public static void main(String[] args){
+		CircularBuffer buffer = new CircularBuffer(7);
+
+		char[] values = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+
+		for (int i = 0; i < values.length;){
+			// Legg inn tre bokstaver i bufferet
+			for (int j = 0; j < 6; j++){
+				if (values.length > i+j){
+					buffer.pushBack(values[i+j]);
+				}
+			}
+
+			// Ta ut alt fra bufferet
+			while (buffer.count() > 0) {
+				System.out.print(buffer.popFront());
+			}
+			System.out.println();
+
+			i = i+6;
+		}
+	}
 }
